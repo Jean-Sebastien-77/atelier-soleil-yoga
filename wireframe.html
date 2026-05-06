@@ -268,6 +268,23 @@
     border: 1px solid var(--line-strong); background: #fff;
     padding: 14px 22px; cursor: pointer; font-size: 14px;
     border-radius: 999px;
+    transition: all 0.2s ease;
+  }
+  .quiz-options button:hover { border-color: var(--ink); background: #fff; }
+  .quiz-options button.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .quiz-result { margin-top: 28px; }
+  .quiz-result-inner {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--ink);
+    padding: 24px 28px;
+    border-radius: 8px;
+    animation: quizFade 0.3s ease;
+  }
+  .quiz-result-inner h3 { margin-bottom: 8px; }
+  @keyframes quizFade {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   /* CONTACT */
@@ -713,12 +730,19 @@
       <div class="section-tag">AIDE AU CHOIX EN 1 QUESTION</div>
       <h3>Aujourd'hui, vous cherchez plutôt à...</h3>
       <div class="quiz-options">
-        <button>🌿 Vous détendre profondément</button>
-        <button>💪 Vous tonifier et bouger</button>
-        <button>🧘 Faire taire votre mental</button>
-        <button>🩹 Soulager une douleur</button>
+        <button data-quiz="yin">🌿 Vous détendre profondément</button>
+        <button data-quiz="vinyasa">💪 Vous tonifier et bouger</button>
+        <button data-quiz="hatha">🧘 Faire taire votre mental</button>
+        <button data-quiz="iyengar">🩹 Soulager une douleur</button>
       </div>
-      <p style="margin-top: 20px; font-size: 13px; color: var(--ink-light);">→ Selon votre réponse, je vous recommande la pratique adaptée.</p>
+      <div id="quiz-result" class="quiz-result" hidden>
+        <div class="quiz-result-inner">
+          <div class="section-tag" id="quiz-result-tag">MA RECOMMANDATION</div>
+          <h3 id="quiz-result-title"></h3>
+          <p id="quiz-result-text"></p>
+          <a href="#" class="btn small" id="quiz-result-link">Découvrir cette pratique ↓</a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -727,7 +751,7 @@
     <p>Mes cours sont essentiellement des Hatha Yoga avec des apports des autres traditions, selon l'énergie du groupe et la saison.</p>
 
     <div class="practices" style="margin-top: 30px;">
-      <div class="practice">
+      <div class="practice" id="practice-hatha">
         <div class="img-ph">[ ILLUSTRATION HATHA ]</div>
         <div class="body">
           <span class="label">Le pilier de mes cours</span>
@@ -737,7 +761,7 @@
           <p><strong>Pour qui ?</strong> Tout le monde. C'est le yoga le plus enseigné en Occident, accessible à tous.</p>
         </div>
       </div>
-      <div class="practice">
+      <div class="practice" id="practice-vinyasa">
         <div class="img-ph">[ ILLUSTRATION VINYASA ]</div>
         <div class="body">
           <span class="label">Pour bouger</span>
@@ -747,7 +771,7 @@
           <p><strong>Pour qui ?</strong> Ceux qui n'arrivent pas à faire taire leur mental, ou qui ont besoin d'une pratique plus physique.</p>
         </div>
       </div>
-      <div class="practice">
+      <div class="practice" id="practice-yin">
         <div class="img-ph">[ ILLUSTRATION YIN ]</div>
         <div class="body">
           <span class="label">Pour relâcher</span>
@@ -757,7 +781,7 @@
           <p><strong>Pour qui ?</strong> Ceux qui ont du mal à se poser, qui dorment mal, ou qui complètent une pratique sportive intense.</p>
         </div>
       </div>
-      <div class="practice">
+      <div class="practice" id="practice-ashtanga">
         <div class="img-ph">[ ILLUSTRATION ASHTANGA ]</div>
         <div class="body">
           <span class="label">Pour structurer</span>
@@ -767,7 +791,7 @@
           <p><strong>Pour qui ?</strong> Ceux qui aiment les pratiques cadrées et exigeantes.</p>
         </div>
       </div>
-      <div class="practice">
+      <div class="practice" id="practice-iyengar">
         <div class="img-ph">[ ILLUSTRATION IYENGAR ]</div>
         <div class="body">
           <span class="label">Pour la précision</span>
@@ -1067,6 +1091,46 @@
   // Initial
   const initial = window.location.hash.replace('#', '') || 'accueil';
   showPage(initial);
+
+  // Quiz interactif (page Pratiques)
+  const quizAnswers = {
+    yin: {
+      title: "Le Yin Yoga est fait pour vous",
+      text: "Une pratique lente et profonde, où chaque posture est tenue plusieurs minutes. Idéal pour relâcher les tensions accumulées, calmer le système nerveux et retrouver le sommeil. C'est le yoga du lâcher-prise."
+    },
+    vinyasa: {
+      title: "Essayez le Vinyasa Yoga",
+      text: "Une pratique fluide et dynamique qui fait circuler les énergies, lessive les tensions physiques et développe souplesse, endurance et force. Parfait quand on a besoin de bouger pour se poser ensuite."
+    },
+    hatha: {
+      title: "Le Hatha Yoga vous correspondra",
+      text: "L'équilibre entre le faire et le ressentir : postures, respiration, méditation. C'est le yoga le plus enseigné, et celui qui aide le mieux à apaiser un mental qui ne s'arrête pas."
+    },
+    iyengar: {
+      title: "L'Iyengar est tout indiqué",
+      text: "Un yoga centré sur l'alignement précis du corps, avec utilisation de supports (briques, sangles). Recommandé en cas de douleurs chroniques, de mauvaises postures à corriger ou de blessure en convalescence."
+    }
+  };
+
+  document.querySelectorAll('.quiz-options button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.quiz;
+      if (!key) return;
+      document.querySelectorAll('.quiz-options button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const result = document.getElementById('quiz-result');
+      const data = quizAnswers[key];
+      document.getElementById('quiz-result-title').textContent = data.title;
+      document.getElementById('quiz-result-text').textContent = data.text;
+      const link = document.getElementById('quiz-result-link');
+      link.onclick = (e) => {
+        e.preventDefault();
+        const target = document.getElementById('practice-' + key);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      };
+      result.hidden = false;
+    });
+  });
 </script>
 
 </body>
