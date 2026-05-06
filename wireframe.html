@@ -78,6 +78,7 @@
     font-weight: 600;
     text-decoration: none;
     cursor: pointer;
+    border-radius: 999px;
   }
   .cta-header:hover { background: #000; }
   .cta-header small { display: block; font-size: 10px; font-weight: 400; opacity: 0.7; margin-top: 2px; }
@@ -126,7 +127,7 @@
   /* BUTTONS */
   .btn {
     display: inline-block;
-    padding: 14px 24px;
+    padding: 14px 28px;
     border: 2px solid var(--ink);
     background: var(--ink);
     color: #fff;
@@ -135,9 +136,11 @@
     font-size: 14px;
     cursor: pointer;
     margin-right: 8px;
+    border-radius: 999px;
+    transition: transform 0.15s ease, opacity 0.15s ease;
   }
   .btn.secondary { background: #fff; color: var(--ink); }
-  .btn.small { padding: 8px 14px; font-size: 12px; }
+  .btn.small { padding: 8px 16px; font-size: 12px; }
   .btn:hover { opacity: 0.85; }
 
   /* HERO */
@@ -264,6 +267,7 @@
   .quiz-options button {
     border: 1px solid var(--line-strong); background: #fff;
     padding: 14px 22px; cursor: pointer; font-size: 14px;
+    border-radius: 999px;
   }
 
   /* CONTACT */
@@ -273,6 +277,7 @@
   .contact-form input, .contact-form select, .contact-form textarea {
     width: 100%; padding: 12px; border: 1px solid var(--line-strong);
     background: #fff; font-family: inherit; font-size: 14px;
+    border-radius: 8px;
   }
   .contact-form textarea { min-height: 120px; resize: vertical; }
   .map-ph { height: 280px; }
@@ -314,21 +319,12 @@
     padding: 8px; width: 100%; margin-bottom: 6px;
   }
   .newsletter-mini button {
-    background: #fff; color: #000; border: none; padding: 8px 14px;
+    background: #fff; color: #000; border: none; padding: 8px 16px;
     font-size: 12px; cursor: pointer; font-weight: 600;
+    border-radius: 999px;
   }
-
-  /* NOTES (annotations wireframe) */
-  .note {
-    background: #fffbe6;
-    border-left: 3px solid #d4a700;
-    padding: 12px 16px;
-    margin: 16px 0;
-    font-size: 13px;
-    color: #5c4400;
-    font-family: "SF Mono", Menlo, monospace;
-  }
-  .note strong { color: #3d2d00; }
+  .newsletter-mini input { border-radius: 6px; }
+  .menu-toggle { border-radius: 6px; }
 
   /* MOBILE */
   @media (max-width: 800px) {
@@ -403,7 +399,6 @@
       </div>
       <div class="img-ph img-hero">[ PHOTO HERO — Sophie en cours, ambiance lumière douce ]</div>
     </div>
-    <div class="note"><strong>À challenger :</strong> Le titre principal. Alternatives : "Reconnectez-vous à vous-même" / "Yoga doux à Viroflay, dans un cadre intimiste" / "Présence, souplesse, respiration".</div>
   </section>
 
   <section>
@@ -504,7 +499,6 @@
         </div>
       </div>
     </div>
-    <div class="note"><strong>À challenger :</strong> Idéalement 4-5 témoignages avec angles variés (débutant rassuré, sportif qui complète, senior qui retrouve souplesse, salarié stressé qui décompresse).</div>
   </section>
 
   <section>
@@ -707,8 +701,6 @@
       <div class="logo-ph">LOGO 4</div>
       <div class="logo-ph">LOGO 5</div>
     </div>
-    <div class="note"><strong>À récolter avec Sophie :</strong> noms d'entreprises clientes (avec leur accord) ou témoignage RH/CSE.</div>
-
     <div class="cta-final" style="margin-top: 40px;">
       <h3>Vous êtes RH, manager ou CSE ?</h3>
       <p>Je vous envoie une proposition chiffrée sous 48h.</p>
@@ -739,7 +731,6 @@
       </div>
       <p style="margin-top: 20px; font-size: 13px; color: var(--ink-light);">→ Selon votre réponse, je vous recommande la pratique adaptée.</p>
     </div>
-    <div class="note"><strong>À challenger :</strong> intéressant pour engager le visiteur. Optionnel en V1 si on veut aller vite — peut être ajouté en V2.</div>
   </section>
 
   <section>
@@ -896,7 +887,6 @@
       </div>
       <div class="img-ph img-square" style="max-width: 280px;">[ PHOTO DIPLÔME / STAGE / LIGNÉE ]</div>
     </div>
-    <div class="note"><strong>À récolter :</strong> détail précis des certifications. Élément clé de crédibilité, surtout pour le B2B (entreprises).</div>
   </section>
 
   <section>
@@ -935,8 +925,7 @@
         <h2>Réserver un cours collectif</h2>
         <p>Le plus simple : réservez directement votre place via Helloresa. Vous voyez les disponibilités en temps réel.</p>
         <a href="#" class="btn" style="margin-bottom: 20px;">Réserver via Helloresa</a>
-        <div class="img-ph" style="height: 240px;">[ IFRAME / WIDGET HELLORESA<br>(à confirmer si l'outil le permet) ]</div>
-        <div class="note" style="margin-top: 16px;"><strong>À vérifier :</strong> Helloresa propose-t-il un widget embarquable ? Sinon → bouton vers leur plateforme.</div>
+        <div class="img-ph" style="height: 240px;">[ Widget Helloresa embarqué — réservation directe ]</div>
       </div>
       <div>
         <h2>Une question, un devis ?</h2>
